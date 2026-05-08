@@ -99,6 +99,10 @@ tr:hover td {
 
 /* Botões da Tabela */
 .actions-cell {
+  vertical-align: middle;
+}
+
+.action-buttons {
   display: flex;
   gap: 8px;
 }

@@ -26,8 +26,10 @@
           <td class="font-mono">{{ vehicle.renavam }}</td>
           <td class="font-mono text-muted">{{ vehicle.chassi }}</td>
           <td class="actions-cell">
-            <button class="btn-icon" (click)="edit.emit(vehicle)">Editar</button>
-            <button class="btn-icon delete-btn" (click)="delete.emit(vehicle)">Excluir</button>
+            <div class="action-buttons">
+              <button class="btn-icon" (click)="edit.emit(vehicle)">Editar</button>
+              <button class="btn-icon delete-btn" (click)="delete.emit(vehicle)">Excluir</button>
+            </div>
           </td>
         </tr>
       } @empty {
