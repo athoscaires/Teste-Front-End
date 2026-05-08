@@ -1,0 +1,5 @@
+[
+  { "id": 1, "placa": "ABC1D23", "chassi": "9BWZZZ37ZHT000001", "renavam": "12345678901", "modelo": "Civic", "marca": "Honda", "ano": 2022 },
+  { "id": 2, "placa": "XYZ9E87", "chassi": "9BWZZZ37ZHT000002", "renavam": "10987654321", "modelo": "Corolla", "marca": "Toyota", "ano": 2023 },
+  { "id": 3, "placa": "QWE4R56", "chassi": "9BWZZZ37ZHT000003", "renavam": "11223344556", "modelo": "Onix", "marca": "Chevrolet", "ano": 2021 }
+]

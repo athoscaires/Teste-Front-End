@@ -1,0 +1,40 @@
+<div class="table-responsive">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Veículo</th>
+        <th>Ano</th>
+        <th>Placa</th>
+        <th>Renavam</th>
+        <th>Chassi</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (vehicle of vehicles(); track vehicle.id) {
+        <tr>
+          <td class="id-column">#0{{ vehicle.id }}</td>
+          <td>
+            <div class="vehicle-info">
+              <span class="brand">{{ vehicle.marca }}</span>
+              <span class="model">{{ vehicle.modelo }}</span>
+            </div>
+          </td>
+          <td><span class="badge badge-blue">{{ vehicle.ano }}</span></td>
+          <td><span class="placa-box">{{ vehicle.placa }}</span></td>
+          <td class="font-mono">{{ vehicle.renavam }}</td>
+          <td class="font-mono text-muted">{{ vehicle.chassi }}</td>
+          <td class="actions-cell">
+            <button class="btn-icon" (click)="edit.emit(vehicle)">Editar</button>
+            <button class="btn-icon delete-btn" (click)="delete.emit(vehicle)">Excluir</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="text-center">Nenhum veículo encontrado.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

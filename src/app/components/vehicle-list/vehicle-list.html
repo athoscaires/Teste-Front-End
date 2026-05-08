@@ -1,0 +1,127 @@
+<nav class="navbar">
+  <div class="nav-content">
+    <div class="logo">
+      <span class="logo-icon">🚗</span> InfoSistemas Frota
+    </div>
+    <div class="user-profile">Admin</div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="page-header">
+    <div class="title-section">
+      <h1>Gestão de Frota</h1>
+      <p>Visualize e gerencie os veículos cadastrados no sistema.</p>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" (click)="onAddVehicle()">+ Novo Veículo</button>
+    </div>
+  </header>
+
+  <div class="card">
+    @if (vehicleService.isLoading()) {
+      <div class="loading-state" style="padding: 24px; text-align: center; color: #64748b;">
+        Buscando veículos na base de dados...
+      </div>
+    }
+    @else if (vehicleService.error()) {
+      <div class="error-state" style="padding: 24px; text-align: center; color: #ef4444;">
+        {{ vehicleService.error() }}
+      </div>
+    }
+    @else {
+      <app-vehicle-table
+        [vehicles]="vehicleService.vehicles()"
+        (edit)="onEditVehicle($event)"
+        (delete)="onDeleteVehicle($event)">
+      </app-vehicle-table>
+    }
+  </div>
+
+  @if (isModalOpen()) {
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <h2>{{ isEditingMode() ? 'Editar Veículo' : 'Novo Veículo' }}</h2>
+
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSaveVehicle()">
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Marca</label>
+              <input type="text" formControlName="marca" placeholder="Ex: Toyota"
+                     [class.input-error]="f.marca.invalid && (f.marca.dirty || f.marca.touched)">
+              @if (f.marca.invalid && (f.marca.dirty || f.marca.touched)) {
+                @if (f.marca.errors?.['required']) { <span class="error-text">A marca é obrigatória.</span> }
+                @if (f.marca.errors?.['pattern']) { <span class="error-text">Não use caracteres especiais.</span> }
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Modelo</label>
+              <input type="text" formControlName="modelo" placeholder="Ex: Corolla"
+                     [class.input-error]="f.modelo.invalid && (f.modelo.dirty || f.modelo.touched)">
+              @if (f.modelo.invalid && (f.modelo.dirty || f.modelo.touched)) {
+                @if (f.modelo.errors?.['required']) { <span class="error-text">O modelo é obrigatório.</span> }
+                @if (f.modelo.errors?.['pattern']) { <span class="error-text">Não use caracteres especiais.</span> }
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Ano</label>
+              <input type="number"
+                     formControlName="ano"
+                     placeholder="Ex: {{currentYear}}"
+                     min="1950"
+                     [max]="maxYear"
+                     (input)="handleYearInput($event)"
+                     [class.input-error]="f.ano.invalid && (f.ano.dirty || f.ano.touched)">
+              @if (f.ano.invalid && (f.ano.dirty || f.ano.touched)) {
+                @if (f.ano.errors?.['required']) { <span class="error-text">O ano é obrigatório.</span> }
+                @if (f.ano.errors?.['min']) { <span class="error-text">O ano mínimo é 1950.</span> }
+                @if (f.ano.errors?.['max']) { <span class="error-text">O ano máximo é {{maxYear}}.</span> }
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Placa</label>
+              <input type="text" formControlName="placa" placeholder="ABC1D23" maxlength="7" style="text-transform: uppercase;"
+                     [class.input-error]="f.placa.invalid && (f.placa.dirty || f.placa.touched)">
+              @if (f.placa.invalid && (f.placa.dirty || f.placa.touched)) {
+                @if (f.placa.errors?.['required']) { <span class="error-text">A placa é obrigatória.</span> }
+                @if (f.placa.errors?.['pattern']) { <span class="error-text">Formato inválido (Ex: ABC1234 ou ABC1D23).</span> }
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Renavam</label>
+              <input type="text" formControlName="renavam" maxlength="11"
+                     (input)="allowOnlyNumbers($event, 'renavam')"
+                     [class.input-error]="f.renavam.invalid && (f.renavam.dirty || f.renavam.touched)">
+              @if (f.renavam.invalid && (f.renavam.dirty || f.renavam.touched)) {
+                @if (f.renavam.errors?.['required']) { <span class="error-text">O Renavam é obrigatório.</span> }
+                @if (f.renavam.errors?.['pattern']) { <span class="error-text">Deve conter exatamente 11 números.</span> }
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Chassi</label>
+              <input type="text" formControlName="chassi" maxlength="17" style="text-transform: uppercase;"
+                     [class.input-error]="f.chassi.invalid && (f.chassi.dirty || f.chassi.touched)">
+              @if (f.chassi.invalid && (f.chassi.dirty || f.chassi.touched)) {
+                @if (f.chassi.errors?.['required']) { <span class="error-text">O Chassi é obrigatório.</span> }
+                @if (f.chassi.errors?.['minlength']) { <span class="error-text">O Chassi deve ter 17 caracteres.</span> }
+              }
+            </div>
+
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn-primary" [disabled]="vehicleForm.invalid">Salvar</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  }
+</div>
